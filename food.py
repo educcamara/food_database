@@ -7,19 +7,19 @@ class Food:
 
     @property
     def compact_text(self):
-        return f"{self.name:<10}|{self.prot:>6}|{self.carb:>6}|{self.fat:>6}"
+        return f"{self.name.capitalize():<15}|{self.prot:>10}|{self.carb:>10}|{self.fat:>10}"
 
     @property
     def text(self):
         return (f"{self.name.capitalize()}: \n"
-                f"\tProteínas:    {self.prot}\n"
-                f"\tCarboidratos: {self.carb}\n"
-                f"\tGorduras:     {self.fat}")
+                f"\t| Proteínas:    {self.prot}\n"
+                f"\t| Carboidratos: {self.carb}\n"
+                f"\t| Gorduras:     {self.fat}")
 
     def __repr__(self):
         return f"{self.name.capitalize()}"
 
-    def config(self, obj: str, value: str):
-        if obj != "name":
+    def config(self, attr: str, value: str):
+        if attr != "name":
             value = float(value)
-        setattr(self, obj, value)
+        setattr(self, attr, value)

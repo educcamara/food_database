@@ -7,47 +7,57 @@ def show_list(lst: [Food]):
         for food in lst:
             text += f"{food.text}\n"
     else:
-        text = "Não há comidas!"
+        text = "Não há comidas."
     print(text)
 
 
 def show_compact_list(lst: [Food]):
     if lst:
-        text = ""
+        text = (f"{'NOME':<15}|{'PROT':>10}|{'CARB':>10}|{'FAT':>10}\n"
+                f"{'-'*15}|{'-'*10}|{'-'*10}|{'-'*10}\n")
         for food in lst:
             text += f"{food.compact_text}\n"
     else:
-        text = "Não há comidas!"
+        text = "Não há comidas."
     print(text)
 
 
 def create_food(lst: [Food]):
-    f_name = input("Nome: ")
-    f_prot = input("Prot: ")
-    f_carb = input("Carb: ")
-    f_fat = input("Fat: ")
+    f_name = input("Nome >> ")
+    f_prot = input("Prot >> ")
+    f_carb = input("Carb >> ")
+    f_fat = input("Fat  >> ")
     lst.append(Food(f_name, f_prot, f_carb, f_fat))
 
 
 def edit_food(lst: [Food]):
-    f_name = input("Digite o nome da comida: ").lower()
+    f_name = input("Nome da Comida >> ").lower()
     food_name_dict = {f.name: f for f in lst}
     if f_name in food_name_dict:
+        attr_dict = {
+            "nome": "name",
+            "prot": "prot",
+            "carb": "carb",
+            "fat": "fat"
+        }
         food = food_name_dict[f_name]
-        attr, value = input("digite o nome do atributo e seu novo valor: ").split()
+        attr, value = input("<atributo> <valor> >>").split()
+        attr = attr_dict[attr.lower()]
         food.config(attr, value)
+        print(f"Atributo <{attr}> editado com sucesso para \"{value}\".")
     else:
-        print("Não há essa comida!")
+        print("Comida não encontrada.")
 
 
 def delete_food(lst: [Food]):
-    f_name = input("Digite o nome da comida: ").lower()
+    f_name = input("Nome da Comida >> ").lower()
     food_name_dict = {f.name: f for f in lst}
     if f_name in food_name_dict:
         food = food_name_dict[f_name]
         lst.remove(food)
+        print(f"Comida \"{food}\" removida com sucesso.")
     else:
-        print("Não há essa comida!")
+        print("Comida não encontrada.")
 
 
 def main():
@@ -64,8 +74,9 @@ def main():
           "3 - Editar comida\n"
           "4 - Remover comida")
     while True:
-        command_input = input("Digite seu comando: ")
+        command_input = input("<comando> >> ")
         if command_input not in command_dict:
+            print("Saindo do programa...")
             break
         command = command_dict.get(command_input)
         command(food_list)
