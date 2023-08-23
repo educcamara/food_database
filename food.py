@@ -5,10 +5,12 @@ class Food:
         self.carb = float(carb)
         self.fat = float(fat)
 
-    def compact_view(self):
+    @property
+    def compact_text(self):
         return f"{self.name:<10}|{self.prot:>6}|{self.carb:>6}|{self.fat:>6}\n"
 
-    def view(self):
+    @property
+    def text(self):
         return (f"{self.name}: \n"
                 f"\tProteínas:    {self.prot}\n"
                 f"\tCarboidratos: {self.carb}\n"
