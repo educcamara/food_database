@@ -14,10 +14,10 @@ def show_list(lst: [Food]):
 
 def show_compact_list(lst: [Food]):
     if lst:
-        text = (f"{'NOME':<15}|{'PROT':>10}|{'CARB':>10}|{'FAT':>10}\n"
-                f"{'-' * 15}|{'-' * 10}|{'-' * 10}|{'-' * 10}\n")
+        text = (f"{'NOME':<15}|{'PROT':>10}|{'CARB':>10}|{'GORD':>10}|\n"
+                f"{'-' * 15}|{'-' * 10}|{'-' * 10}|{'-' * 10}|\n")
         for food in lst:
-            text += f"{food.compact_text}\n"
+            text += f"{food.compact_text}|\n"
     else:
         text = "Não há comidas."
     print(text)
@@ -40,7 +40,7 @@ def edit_food(lst: [Food]):
             "nome": "name",
             "prot": "prot",
             "carb": "carb",
-            "fat": "fat"
+            "gord": "fat"
         }
         food = food_name_dict[f_name]
         attr, value = input("<atributo> <valor> >>").split()
@@ -80,14 +80,18 @@ def main():
     print("1 - Mostrar lista (1.1 para lista compactada)\n"
           "2 - Adicionar comida\n"
           "3 - Editar comida\n"
-          "4 - Remover comida")
+          "4 - Remover comida\n"
+          "q - Sair do programa\n")
     while True:
         command_input = input("<comando> >> ")
-        if command_input not in command_dict:
+        if command_input.lower() == 'q':
             with open("food_list", "wb") as file:
                 pickle.dump(food_list, file)
             print("Saindo do programa...")
             break
+        if command_input not in command_dict:
+            print("Comando inválido")
+            continue
         command = command_dict.get(command_input)
         command(food_list)
 
