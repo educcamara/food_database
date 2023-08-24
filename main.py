@@ -1,4 +1,5 @@
 from food import Food
+import pickle
 
 
 def show_list(lst: [Food]):
@@ -14,7 +15,7 @@ def show_list(lst: [Food]):
 def show_compact_list(lst: [Food]):
     if lst:
         text = (f"{'NOME':<15}|{'PROT':>10}|{'CARB':>10}|{'FAT':>10}\n"
-                f"{'-'*15}|{'-'*10}|{'-'*10}|{'-'*10}\n")
+                f"{'-' * 15}|{'-' * 10}|{'-' * 10}|{'-' * 10}\n")
         for food in lst:
             text += f"{food.compact_text}\n"
     else:
@@ -28,6 +29,7 @@ def create_food(lst: [Food]):
     f_carb = input("Carb >> ")
     f_fat = input("Fat  >> ")
     lst.append(Food(f_name, f_prot, f_carb, f_fat))
+    lst.sort(key=lambda f: f.name)
 
 
 def edit_food(lst: [Food]):
@@ -47,6 +49,7 @@ def edit_food(lst: [Food]):
         print(f"Atributo <{attr}> editado com sucesso para \"{value}\".")
     else:
         print("Comida não encontrada.")
+    lst.sort(key=lambda f: f.name)
 
 
 def delete_food(lst: [Food]):
@@ -61,7 +64,12 @@ def delete_food(lst: [Food]):
 
 
 def main():
-    food_list: [Food] = []
+    try:
+        with open("food_list", "rb") as file:
+            food_list: [Food] = pickle.load(file)
+    except (EOFError, FileNotFoundError):
+        food_list: [Food] = []
+
     command_dict = {
         '1': show_list,
         '1.1': show_compact_list,
@@ -76,6 +84,8 @@ def main():
     while True:
         command_input = input("<comando> >> ")
         if command_input not in command_dict:
+            with open("food_list", "wb") as file:
+                pickle.dump(food_list, file)
             print("Saindo do programa...")
             break
         command = command_dict.get(command_input)
