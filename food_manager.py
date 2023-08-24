@@ -92,5 +92,4 @@ def main():
         command(food_list)
 
 
-if __name__ == '__main__':
-    main()
+main()
