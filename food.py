@@ -1,25 +1,35 @@
 class Food:
-    def __init__(self, name, prot, carb, fat):
+    def __init__(self, name: str, prot: float, carb: float, fat: float, fiber: float, measure: float):
         self.name = name.lower()
-        self.prot = float(prot)
-        self.carb = float(carb)
-        self.fat = float(fat)
-
-    @property
-    def compact_text(self):
-        return f"{self.name.capitalize():<15}|{self.prot:>10}|{self.carb:>10}|{self.fat:>10}"
-
-    @property
-    def text(self):
-        return (f"{self.name.capitalize()}: \n"
-                f"\t| Proteínas:    {self.prot}\n"
-                f"\t| Carboidratos: {self.carb}\n"
-                f"\t| Gorduras:     {self.fat}")
+        self.prot = self._convert_value(prot, measure)
+        self.carb = self._convert_value(carb, measure)
+        self.fat = self._convert_value(fat, measure)
+        self.fiber = self._convert_value(fiber, measure)
 
     def __repr__(self):
-        return f"{self.name.capitalize()}"
+        return f"{self.name.capitalize()}({self.prot:.2f}, {self.carb:.2f}, {self.fat:.2f}, {self.fiber:.2f})"
 
-    def config(self, attr: str, value: str):
+    def config(self, attr, value, measure: float):
         if attr != "name":
-            value = float(value)
+            value = self._convert_value(float(value), measure)
+        else:
+            value = value.lower()
         setattr(self, attr, value)
+
+    @staticmethod
+    def _convert_value(value: float, measure: float):
+        return (100 * value) / measure
+
+
+def show_food_list(lst: [Food]):
+    if lst:
+        text = ""
+        for food in lst:
+            text += (f"{food.name.capitalize()} (100g):\n"
+                     f"\t| Proteínas:    {food.prot}\n"
+                     f"\t| Carboidratos: {food.carb}\n"
+                     f"\t| Gorduras:     {food.fat}\n"
+                     f"\t| Fibras:       {food.fiber}\n")
+    else:
+        text = "Não há comidas."
+    print(text)
