@@ -62,6 +62,7 @@ except (EOFError, FileNotFoundError):
 
 ...
 while True: # loop principal
+    ...
     if command_input.lower() == 'q':
         with open("food_list", "wb") as file: # wb = write binary
             pickle.dump(food_list, file) # salva a lista de classe Food no arquivo
